@@ -2,15 +2,18 @@ import streamlit as st
 import pandas as pd
 import joblib
 import numpy as np
-import os # Import os to check for file existence
+import os # Import os to build a robust file path
 
 # --- Load the Model ---
-# Load the pre-trained pipeline (preprocessor + model)
-model_filename = 'heart_disease_model.pkl'
+# Build a robust path to the model file
+# This finds the directory the script is in and joins it with the model filename
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+model_filename = os.path.join(BASE_DIR, 'heart_disease_model.pkl')
 
 if not os.path.exists(model_filename):
     st.error(f"Model file '{model_filename}' not found. "
-             "Please run the `heart_disease_model_training.py` script first to generate the model file.")
+             "Please make sure 'heart_disease_model.pkl' is in the same "
+             "GitHub directory as 'app.py'.")
     st.stop()
 else:
     try:
@@ -138,4 +141,3 @@ st.markdown(
     "with any questions you may have regarding a medical condition.</small>",
     unsafe_allow_html=True
 )
-
